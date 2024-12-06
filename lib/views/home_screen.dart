@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_flow/models/task_model.dart';
+import 'package:task_flow/views_model/task_view_model.dart';
 import 'package:task_flow/widgets/overview_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,6 +9,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final taskViewModel = context.watch<TaskViewModel>();
+    final tasks = taskViewModel.tasks;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task Flow'),
@@ -29,17 +35,25 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            const SingleChildScrollView(
+            SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  OverviewCard(title: 'Total Tasks', count: 10),
-                  SizedBox(width: 10),
-                  OverviewCard(title: 'Pending Tasks', count: 5),
-                  SizedBox(width: 10),
-                  OverviewCard(title: 'Completed Tasks', count: 5),
-                  SizedBox(width: 10),
+                  OverviewCard(
+                    title: 'Total Tasks',
+                    count: tasks.length,
+                  ),
+                  const SizedBox(width: 10),
+                  OverviewCard(
+                    title: 'Pending Tasks',
+                    count: 10,
+                  ),
+                  const SizedBox(width: 10),
+                  OverviewCard(
+                    title: 'Completed Tasks',
+                    count: 5,
+                  ),
                 ],
               ),
             ),
@@ -63,28 +77,33 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    child: ListTile(
-                      leading: const Icon(Icons.task),
-                      title: const Text('Task Title'),
-                      subtitle: const Text('Due Date: 2024-12-07'),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          // Implement task deletion
-                        },
-                      ),
-                      onTap: () {
-                        // Navigate to Task Details Screen
+              child: tasks.isEmpty
+                  ? const Center(child: Text('No tasks available.'))
+                  : ListView.builder(
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        final task = tasks[index];
+                        return Card(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: ListTile(
+                            leading: const Icon(Icons.task),
+                            title: Text(task.title),
+                            subtitle: Text(
+                              'Due Date: ${task.dueDate.toString().split(' ')[0]}',
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                taskViewModel.deleteTask(task.id!);
+                              },
+                            ),
+                            onTap: () {
+                              // Navigate to Task Details Screen
+                            },
+                          ),
+                        );
                       },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
