@@ -6,7 +6,7 @@ import 'package:task_flow/views_model/task_view_model.dart';
 class EditTaskScreen extends StatefulWidget {
   final TaskModel task;
 
-  const EditTaskScreen({Key? key, required this.task}) : super(key: key);
+  const EditTaskScreen({super.key, required this.task});
 
   @override
   State<EditTaskScreen> createState() => _EditTaskScreenState();
@@ -59,6 +59,10 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
       _selectedDate!,
     );
 
+    // Show a SnackBar indicating the task was updated successfully
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Task updated successfully!')),
+    );
     Navigator.pop(context); // Go back to the previous screen
     Navigator.pop(context); // Close Task Details Screen and refresh
   }

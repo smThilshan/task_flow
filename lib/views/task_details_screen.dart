@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:task_flow/models/task_model.dart';
+import 'package:task_flow/utils/constants.dart';
 import 'package:task_flow/views/edit_task_screen.dart';
 
 class TaskDetailsScreen extends StatelessWidget {
   final TaskModel task;
 
-  const TaskDetailsScreen({Key? key, required this.task}) : super(key: key);
+  const TaskDetailsScreen({super.key, required this.task});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = AppConstants.getScreenWidth(context);
+    // final screenHeight = AppConstants.getScreenHeight(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task Details'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenWidth * 0.03),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_flow/models/task_model.dart';
-import 'package:task_flow/views/task_details_screen.dart';
 import 'package:task_flow/views_model/task_view_model.dart';
 import 'package:task_flow/widgets/overview_widget.dart';
+import 'package:task_flow/utils/constants.dart';
+import 'package:task_flow/widgets/task_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     final taskViewModel = context.watch<TaskViewModel>();
     final tasks = taskViewModel.tasks;
 
+    final screenWidth = AppConstants.getScreenWidth(context);
+    // final screenHeight = AppConstants.getScreenHeight(context);
+
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Task Flow'),
         actions: [
           IconButton(
@@ -87,30 +88,9 @@ class HomeScreen extends StatelessWidget {
                       itemCount: tasks.length,
                       itemBuilder: (context, index) {
                         final task = tasks[index];
-                        return Card(
-                          margin: const EdgeInsets.only(bottom: 12),
-                          child: ListTile(
-                            leading: const Icon(Icons.task),
-                            title: Text(task.title),
-                            subtitle: Text(
-                              'Due Date: ${task.dueDate.toString().split(' ')[0]}',
-                            ),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                taskViewModel.deleteTask(task.id!);
-                              },
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      TaskDetailsScreen(task: task),
-                                ),
-                              );
-                            },
-                          ),
+                        return TaskCardWidget(
+                          task: task,
+                          taskViewModel: taskViewModel,
                         );
                       },
                     ),

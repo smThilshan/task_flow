@@ -6,11 +6,11 @@ class TitleTextFieldWidget extends StatelessWidget {
   final int maxLines;
 
   const TitleTextFieldWidget({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.maxLines = 3,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class TitleTextFieldWidget extends StatelessWidget {
       maxLines: maxLines,
       decoration: InputDecoration(
         labelText: labelText,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
       ),
     );
   }

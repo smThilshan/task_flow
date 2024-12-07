@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:task_flow/views_model/task_view_model.dart';
 import 'package:task_flow/widgets/title_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:task_flow/utils/constants.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
+  const AddTaskScreen({super.key});
 
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
@@ -48,18 +49,25 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       description,
       _selectedDate!,
     );
+    // Show a SnackBar indicating the task was added successfully
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Task added successfully!')),
+    );
 
     Navigator.pop(context); // Go back to the previous screen
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = AppConstants.getScreenWidth(context);
+    // ignore: unused_local_variable
+    final screenHeight = AppConstants.getScreenHeight(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Task'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenWidth * 0.03),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
