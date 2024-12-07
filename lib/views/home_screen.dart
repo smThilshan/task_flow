@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_flow/models/task_model.dart';
+import 'package:task_flow/views/task_details_screen.dart';
 import 'package:task_flow/views_model/task_view_model.dart';
 import 'package:task_flow/widgets/overview_widget.dart';
 
@@ -9,6 +10,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     final taskViewModel = context.watch<TaskViewModel>();
     final tasks = taskViewModel.tasks;
 
@@ -25,7 +29,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(screenWidth * 0.03),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,12 +49,12 @@ class HomeScreen extends StatelessWidget {
                     count: tasks.length,
                   ),
                   const SizedBox(width: 10),
-                  OverviewCard(
+                  const OverviewCard(
                     title: 'Pending Tasks',
                     count: 10,
                   ),
                   const SizedBox(width: 10),
-                  OverviewCard(
+                  const OverviewCard(
                     title: 'Completed Tasks',
                     count: 5,
                   ),
@@ -98,7 +102,13 @@ class HomeScreen extends StatelessWidget {
                               },
                             ),
                             onTap: () {
-                              // Navigate to Task Details Screen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      TaskDetailsScreen(task: task),
+                                ),
+                              );
                             },
                           ),
                         );

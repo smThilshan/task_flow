@@ -26,9 +26,17 @@ class TaskViewModel extends ChangeNotifier {
   }
 
   // Update a task
-  Future<void> updateTask(TaskModel task) async {
-    await _databaseService.updateTask(task);
-    await loadTasks();
+  void updateTask(int id, String title, String description, DateTime dueDate) {
+    final taskIndex = _tasks.indexWhere((task) => task.id == id);
+    if (taskIndex != -1) {
+      _tasks[taskIndex] = TaskModel(
+        id: id,
+        title: title,
+        description: description,
+        dueDate: dueDate,
+      );
+      notifyListeners();
+    }
   }
 
   // Delete a task
